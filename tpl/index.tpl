@@ -1,8 +1,6 @@
 <%header%>
 
-<body>
-
-</body>
+Test!
 
 <%footer%>
 
