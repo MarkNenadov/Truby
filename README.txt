@@ -19,12 +19,14 @@ output an HTML file to the browser:
 >> tpl_engine.load_tpl( index )
 >> tpl_engine.replace_tag_tpl("header", header)
 >> tpl_engine.replace_tag_tpl("footer", footer)
+>> tpl_engine.replace_tag_str("user", "John Q Public")
+>> tpl_engine.replace_tag_str("status", "Hired")
 >> tpl_engine.display()
 
-It's much better to use a MVC framework like Rails, however, in
-some cases that isn't feasible and its sometimes convenient to have a
-quick and dirty templating engine. And in cases like that, Truby can
-be really handy.
+It's much better to use a MVC framework like Rails, however, there are
+some cases where that might not be possible. Perhaps you may have to
+make a Ruby site interfacing with (gasp) CGI. In cases like that, Truby 
+can be really handy.
 
 TODO:
 
