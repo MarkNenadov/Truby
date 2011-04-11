@@ -1,1 +1,1 @@
-TEMPLATE_DIR = "tpl\"
+TEMPLATE_DIR = "tpl/"

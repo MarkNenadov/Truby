@@ -20,10 +20,12 @@ class Template
     #@content
     #@tag_delimiter_start
     #@tag_delimiter_stop
+    #@template_dir
 
-    def initialize(tag_delimiter_start='<%', tag_delimiter_stop='<%')
+    def initialize(template_dir, tag_delimiter_start="<%", tag_delimiter_stop="%>")
         @tag_delimiter_start = tag_delimiter_start
         @tag_delimiter_stop = tag_delimiter_stop
+	@template_dir = template_dir
     end
 
     def set_content(c)
@@ -32,6 +34,10 @@ class Template
 
     def get_content()
          return @content
+    end
+
+    def get_template_dir()
+        return @template_dir
     end
 
     def clear_content()
@@ -58,7 +64,7 @@ class Template
     def load_file(file_name)
         clear_content()
         content_str = ""
-        File.open(file_name).each_line do |line|
+        File.open(get_template_dir() + file_name).each_line do |line|
             content_str += line
         end
         set_content(content_str)
@@ -69,4 +75,23 @@ class Template
          puts get_content()
     end
 
+end
+
+class DivTemplate < Template
+    #@class_name
+    #@div_content
+    #@tpl
+
+    def initialize(template_dir, class_name)
+	set_class(class_name)
+        super(template_dir)
+    end
+
+    def set_class(class_name)
+        @class_name = class_name   
+    end
+
+    def get_content()
+        return "<div class='" + @class_name + "'>" + super() + "</div>"
+    end
 end

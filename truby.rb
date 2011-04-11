@@ -15,8 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-
 require "constants.rb"
 require "lib/templating.rb"
 
@@ -37,6 +35,10 @@ class Truby
 
     def get_new_template()
         return Template.new(@template_dir)
+    end
+
+    def get_new_div_template(class_name)
+        return DivTemplate.new(@template_dir, class_name)
     end
 
     def replace_tag_str(tag, tpl)
@@ -62,9 +64,9 @@ end
 
 ## MAIN ##
 
-puts "Sample / Test #1 (three independant templates):"
+puts "Sample / Test #1 (Simple header, index, footer):"
 
-tpl_engine = Truby.new
+tpl_engine = Truby.new(TEMPLATE_DIR)
 
 header = tpl_engine.get_new_template()
 header.load_file("header.tpl")
@@ -75,34 +77,17 @@ index.load_file("index.tpl")
 footer = tpl_engine.get_new_template()
 footer.load_file("footer.tpl")
 
-tpl_engine.load_tpl( header )
+index.replace_tag_str("divgoeshere", "")
+index.replace_tag_tpl("header", header)
+index.replace_tag_tpl("footer", footer)
+
 tpl_engine.load_tpl( index )
-tpl_engine.load_tpl( footer )
 
 tpl_engine.display()
 
-puts "Sample / Test #2 (three templates, two of which get swapped into the third):"
+puts "Sample / Test #2 (Same as #1, but blanks out header/footer tags and uses devour methods instead ):"
 
-tpl_engine = Truby.new
-
-header = tpl_engine.get_new_template()
-header.load_file("header.tpl")
-
-index = tpl_engine.get_new_template()
-index.load_file("index.tpl")
-
-footer = tpl_engine.get_new_template()
-footer.load_file("footer.tpl")
-
-tpl_engine.load_tpl( index )
-tpl_engine.replace_tag_tpl("header", header)
-tpl_engine.replace_tag_tpl("footer", footer)
-
-tpl_engine.display()
-
-puts "Sample / Test #3 (basically the same as #2, except it does it with the devour_tpl_* methods):"
-
-tpl_engine = Truby.new
+tpl_engine = Truby.new(TEMPLATE_DIR)
 
 header = tpl_engine.get_new_template()
 header.load_file("header.tpl")
@@ -113,8 +98,36 @@ index.load_file("index.tpl")
 footer = tpl_engine.get_new_template()
 footer.load_file("footer.tpl")
 
+index.replace_tag_str("divgoeshere", "")
+index.replace_tag_str("header", "")
+index.replace_tag_str("footer", "")
 index.devour_tpl_top(header)
 index.devour_tpl_bottom(footer)
+
+tpl_engine.load_tpl( index )
+
+tpl_engine.display()
+
+
+puts "Sample / Test #3 (Same as #1, except it also demonstrates a usage of get_new_div_template / DivTemplate):"
+
+tpl_engine = Truby.new(TEMPLATE_DIR)
+
+header = tpl_engine.get_new_template()
+header.load_file("header.tpl")
+
+index = tpl_engine.get_new_template()
+index.load_file("index.tpl")
+
+footer = tpl_engine.get_new_template()
+footer.load_file("footer.tpl")
+
+div = tpl_engine.get_new_div_template("highlighted")
+div.load_file("div_contents.tpl")
+
+index.replace_tag_tpl("divgoeshere", div)
+index.replace_tag_tpl("header", header)
+index.replace_tag_tpl("footer", footer)
 
 tpl_engine.load_tpl( index )
 
