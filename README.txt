@@ -37,7 +37,9 @@ This templating engine is currently missing (at least):
 
 AUTHOR
 
-(c) Mark J. Nenadov, 2011 <marknenadov@gmail.com>
+* Mark J. Nenadov
+* Essex, Ontario
+* Email: <marknenadov@gmail.com>
 
 
 LICENSING
